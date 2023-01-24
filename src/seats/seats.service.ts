@@ -5,7 +5,7 @@ import { Seat } from './entities/seat.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PassengersService } from '../passengers/passengers.service';
-import { Trip } from "../trips/entities/trip.entity";
+import { TripsService } from '../trips/trips.service';
 
 @Injectable()
 export class SeatsService {
@@ -13,15 +13,16 @@ export class SeatsService {
     @InjectRepository(Seat)
     private readonly seatRepository: Repository<Seat>,
     private readonly passengerService: PassengersService,
+    private readonly tripService: TripsService,
   ) {}
 
-  create(createSeatDto: CreateSeatDto) {
-    const seat = this.seatRepository.create(createSeatDto);
-    return this.seatRepository.save(seat);
-  }
-  async assignToTrip(seatId: number, trip: Trip) {
-    const seat = await this.findOne(seatId);
-    seat.trip = trip;
+  async create(createSeatDto: CreateSeatDto) {
+    const trip = await this.tripService.findOne(createSeatDto.trip);
+    const seat = this.seatRepository.create({
+      seatNumber: createSeatDto.seatNumber,
+      isBooked: createSeatDto.isBooked,
+      trip,
+    });
     return this.seatRepository.save(seat);
   }
 

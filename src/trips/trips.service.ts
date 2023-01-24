@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,6 @@ export class TripsService {
     @InjectRepository(Trip)
     private readonly tripRepository: Repository<Trip>,
     private readonly departmentService: DepartmentsService,
-    private readonly seatService: SeatsService,
   ) {}
   async create(createTripDto: CreateTripDto) {
     const originPoint = await this.departmentService.findOne(
@@ -27,30 +26,30 @@ export class TripsService {
       destinationPoint,
       departureTime: createTripDto.departureTime,
     });
-    const savedTrip = await this.tripRepository.save(trip);
-    // Creating 15 seats
-    const allPromises = () => {
-      for (let i = 0; i < 15; i++) {
-        let seatId = 0;
-        return new Promise((resolve, reject) => {
-          const seat = this.seatService
-            .create({
-              seatNumber: i + 1,
-              isBooked: false,
-            })
-            .then((seat) => {
-              resolve(seat);
-              seatId = seat.id;
-            });
-          this.seatService.assignToTrip(seatId, trip);
-        });
-      }
-    };
-    await Promise.all([allPromises()]).then(
-      (values) => console.log(values),
-      (reason) => console.log(reason),
-    );
-    return savedTrip;
+    return await this.tripRepository.save(trip);
+  }
+  async findByPoints(start_point: string, end_point: string) {
+    if (!start_point || !end_point) {
+      throw new Error('Please provide start and end points');
+    }
+    const trips = await this.tripRepository.find({
+      relations: {
+        originPoint: true,
+        destinationPoint: true,
+      },
+      where: {
+        originPoint: {
+          name: start_point,
+        },
+        destinationPoint: {
+          name: end_point,
+        },
+      },
+    });
+    if (!trips) {
+      throw new NotFoundException('No trips found');
+    }
+    return trips;
   }
 
   findAll() {

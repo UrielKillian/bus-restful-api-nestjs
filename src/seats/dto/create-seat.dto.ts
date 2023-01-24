@@ -5,4 +5,6 @@ export class CreateSeatDto {
   readonly seatNumber: number;
   @IsBoolean()
   readonly isBooked: boolean;
+  @IsNumber()
+  readonly trip: number;
 }

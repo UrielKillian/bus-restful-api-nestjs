@@ -10,23 +10,15 @@ import { Department } from '../../departments/entities/department.entity';
 import { Passenger } from '../../passengers/entities/passenger.entity';
 import { Seat } from '../../seats/entities/seat.entity';
 import { JoinColumn } from 'typeorm';
+import { Trip } from '../../trips/entities/trip.entity';
 
 @Entity()
 export class Ticket {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Department, (department) => department.ticket_originPoint)
-  originPoint: Department;
-
-  @ManyToOne(
-    () => Department,
-    (department) => department.ticket_destinationPoint,
-  )
-  destinationPoint: Department;
-
-  @Column()
-  departureDate: Date;
+  @ManyToOne(() => Trip, (trip) => trip.tickets)
+  trip: Trip;
 
   @Column()
   arrivalDate: Date;

@@ -6,13 +6,15 @@ import { Ticket } from './entities/ticket.entity';
 import { DepartmentsModule } from '../departments/departments.module';
 import { TripsModule } from '../trips/trips.module';
 import { PassengersModule } from '../passengers/passengers.module';
+import { SeatsModule } from "../seats/seats.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Ticket]),
-    DepartmentsModule,
+    SeatsModule,
     TripsModule,
     PassengersModule,
+    DepartmentsModule,
   ],
   controllers: [TicketsController],
   providers: [TicketsService],

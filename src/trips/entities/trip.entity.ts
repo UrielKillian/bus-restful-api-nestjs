@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Department } from '../../departments/entities/department.entity';
 import { Seat } from '../../seats/entities/seat.entity';
+import { Ticket } from "../../tickets/entities/ticket.entity";
 
 @Entity()
 export class Trip {
@@ -29,9 +30,13 @@ export class Trip {
     cascade: true,
     eager: true,
     nullable: true,
+    onDelete: 'CASCADE',
   })
   seats: Seat[];
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.trip)
+  tickets: Ticket[];
 }

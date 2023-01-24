@@ -7,7 +7,7 @@ import { DepartmentsModule } from '../departments/departments.module';
 import { SeatsModule } from '../seats/seats.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Trip]), DepartmentsModule, SeatsModule],
+  imports: [TypeOrmModule.forFeature([Trip]), DepartmentsModule],
   controllers: [TripsController],
   providers: [TripsService],
   exports: [TripsService],

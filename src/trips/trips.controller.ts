@@ -23,6 +23,10 @@ export class TripsController {
   findOne(@Param('id') id: string) {
     return this.tripsService.findOne(+id);
   }
+  @Get('/start/:start/end/:end')
+  findByPoints(@Param('start') start: string, @Param('end') end: string) {
+    return this.tripsService.findByPoints(start, end);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTripDto: UpdateTripDto) {
