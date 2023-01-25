@@ -18,8 +18,4 @@ export class Department {
   trips_origin: Trip[];
   @OneToMany((type) => Trip, (trip) => trip.destinationPoint)
   trips_destination: Trip[];
-  @OneToMany((type) => Ticket, (ticket) => ticket.originPoint)
-  ticket_originPoint: Ticket[];
-  @OneToMany((type) => Ticket, (ticket) => ticket.destinationPoint)
-  ticket_destinationPoint: Ticket[];
 }

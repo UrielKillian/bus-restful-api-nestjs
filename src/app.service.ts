@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { SeatsService } from './seats/seats.service';
 import { TripsService } from './trips/trips.service';
 import { number } from 'joi';
+import { TicketsService } from './tickets/tickets.service';
+import { PassengersService } from './passengers/passengers.service';
 
 @Injectable()
 export class AppService {
   constructor(
     readonly seatsService: SeatsService,
     readonly tripsService: TripsService,
+    readonly ticketsService: TicketsService,
+    readonly passengerService: PassengersService,
   ) {}
   createTripAndSeats(
     start_point: number,
@@ -35,5 +39,29 @@ export class AppService {
         }
       });
     return trip;
+  }
+
+  async createTicket(
+    seatId: number,
+    tripId: number,
+    passenger_name: string,
+    passenger_lastname: string,
+    arrived_time: Date,
+  ) {
+    const passenger = await this.passengerService
+      .create({
+        name: passenger_name,
+        lastName: passenger_lastname,
+      })
+      .then(async (p) => {
+        await this.seatsService.update(seatId, p.id, { isBooked: true });
+        await this.ticketsService.create({
+          seatId: seatId,
+          tripId: tripId,
+          passengerId: p.id,
+          arrivalDate: arrived_time,
+        });
+      });
+    return passenger;
   }
 }

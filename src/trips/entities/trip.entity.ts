@@ -1,14 +1,17 @@
 import {
   Column,
   CreateDateColumn,
-  Entity, JoinColumn, ManyToOne,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Department } from '../../departments/entities/department.entity';
 import { Seat } from '../../seats/entities/seat.entity';
-import { Ticket } from "../../tickets/entities/ticket.entity";
+import { Ticket } from '../../tickets/entities/ticket.entity';
 
 @Entity()
 export class Trip {
@@ -37,6 +40,8 @@ export class Trip {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.trip)
+  @OneToMany((type) => Ticket, (ticket) => ticket.trip, {
+    onDelete: 'CASCADE',
+  })
   tickets: Ticket[];
 }

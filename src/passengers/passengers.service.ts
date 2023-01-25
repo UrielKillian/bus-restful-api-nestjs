@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreatePassengerDto } from './dto/create-passenger.dto';
 import { UpdatePassengerDto } from './dto/update-passenger.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,7 +22,13 @@ export class PassengersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} passenger`;
+    const passenger = this.passengerRepository.findOneBy({
+      id: id,
+    });
+    if (!passenger) {
+      throw new NotFoundException('Passenger not found');
+    }
+    return passenger;
   }
 
   update(id: number, updatePassengerDto: UpdatePassengerDto) {

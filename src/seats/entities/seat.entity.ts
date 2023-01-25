@@ -8,7 +8,6 @@ import {
 import { Trip } from '../../trips/entities/trip.entity';
 import { Passenger } from '../../passengers/entities/passenger.entity';
 import { JoinColumn } from 'typeorm';
-import Joi from "joi";
 
 @Entity()
 export class Seat {
@@ -28,6 +27,7 @@ export class Seat {
   @ManyToOne((type) => Passenger, {
     cascade: true,
     onDelete: 'CASCADE',
+    eager: true,
   })
   @JoinColumn()
   passenger: Passenger;

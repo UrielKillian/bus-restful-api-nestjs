@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -17,16 +18,29 @@ export class Ticket {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Trip, (trip) => trip.tickets)
+  @ManyToOne(() => Trip, (trip) => trip.tickets, {
+    cascade: true,
+    eager: true,
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   trip: Trip;
 
   @Column()
   arrivalDate: Date;
 
-  @ManyToOne(() => Passenger, (passenger) => passenger.tickets)
+  @ManyToOne(() => Passenger, (passenger) => passenger.tickets,{
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
   passenger: Passenger;
 
-  @OneToOne(() => Seat)
+  @OneToOne(() => Seat, {
+    cascade: true,
+    eager: true,
+  })
   @JoinColumn()
   seat: Seat;
 }

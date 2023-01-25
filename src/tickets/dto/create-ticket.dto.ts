@@ -6,5 +6,7 @@ export class CreateTicketDto {
   @IsNumber()
   readonly seatId: number;
   @IsNumber()
-  readonly passengerId: number
+  readonly passengerId: number;
+  @IsString()
+  readonly arrivalDate: Date;
 }

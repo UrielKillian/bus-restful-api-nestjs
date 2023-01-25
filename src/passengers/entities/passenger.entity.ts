@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Seat } from '../../seats/entities/seat.entity';
 import { Ticket } from '../../tickets/entities/ticket.entity';
 
@@ -14,6 +14,7 @@ export class Passenger {
   lastName: string;
 
   @OneToMany(() => Ticket, (ticket) => ticket.passenger)
+  @JoinColumn()
   tickets: Ticket[];
 
   @OneToMany(() => Seat, (seat) => seat.passenger)

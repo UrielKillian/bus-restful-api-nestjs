@@ -47,8 +47,12 @@ export class SeatsService {
     return seat;
   }
 
-  update(id: number, updateSeatDto: UpdateSeatDto) {
-    return `This action updates a #${id} seat`;
+  async update(id: number, passengerId: number, updateSeatDto: UpdateSeatDto) {
+    const seat = await this.findOne(id);
+    const passenger = await this.passengerService.findOne(passengerId);
+    seat.isBooked = updateSeatDto.isBooked;
+    seat.passenger = passenger;
+    return this.seatRepository.save(seat);
   }
 
   remove(id: number) {
