@@ -23,6 +23,11 @@ export class TripsController {
   findOne(@Param('id') id: string) {
     return this.tripsService.findOne(+id);
   }
+
+  @Get('?page=:page&limit=:limit')
+  findByPages(@Param('page') page: number, @Param('limit') limit: number) {
+    return this.tripsService.findByPage(page, limit);
+  }
   @Get('/start/:start/end/:end')
   findByPoints(@Param('start') start: string, @Param('end') end: string) {
     return this.tripsService.findByPoints(start, end);

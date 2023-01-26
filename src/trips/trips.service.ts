@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTripDto } from './dto/create-trip.dto';
 import { UpdateTripDto } from './dto/update-trip.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -54,6 +54,14 @@ export class TripsService {
 
   findAll() {
     return this.tripRepository.find();
+  }
+
+  // Create Pagination
+  findByPage(page: number, limit: number) {
+    return this.tripRepository.find({
+      skip: page,
+      take: limit,
+    });
   }
 
   async findOne(id: number) {

@@ -10,6 +10,7 @@ import { SeatsModule } from './seats/seats.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ChatGateway } from "./chat.gateway";
 
 @Module({
   imports: [
@@ -39,6 +40,6 @@ import { UsersModule } from './users/users.module';
     //
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
-export class AppModule { }
+export class AppModule {}
