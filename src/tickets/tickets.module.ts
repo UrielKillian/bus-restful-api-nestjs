@@ -7,6 +7,7 @@ import { DepartmentsModule } from '../departments/departments.module';
 import { TripsModule } from '../trips/trips.module';
 import { PassengersModule } from '../passengers/passengers.module';
 import { SeatsModule } from "../seats/seats.module";
+import { UsersModule } from "../users/users.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SeatsModule } from "../seats/seats.module";
     TripsModule,
     PassengersModule,
     DepartmentsModule,
+    UsersModule,
   ],
   controllers: [TicketsController],
   providers: [TicketsService],

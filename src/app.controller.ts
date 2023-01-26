@@ -28,6 +28,7 @@ export class AppController {
       createTicketDto.passengerName,
       createTicketDto.passengerLastName,
       createTicketDto.arrivedTime,
+      createTicketDto.userId,
     );
   }
 }

@@ -12,6 +12,7 @@ import { Passenger } from '../../passengers/entities/passenger.entity';
 import { Seat } from '../../seats/entities/seat.entity';
 import { JoinColumn } from 'typeorm';
 import { Trip } from '../../trips/entities/trip.entity';
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Ticket {
@@ -43,4 +44,10 @@ export class Ticket {
   })
   @JoinColumn()
   seat: Seat;
+
+  @ManyToOne(() => User, (user) => user.tickets, {
+    cascade: true,
+  })
+  @JoinColumn()
+  user: User;
 }

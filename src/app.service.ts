@@ -47,6 +47,7 @@ export class AppService {
     passenger_name: string,
     passenger_lastname: string,
     arrived_time: Date,
+    userId: number,
   ) {
     const passenger = await this.passengerService
       .create({
@@ -60,6 +61,7 @@ export class AppService {
           tripId: tripId,
           passengerId: p.id,
           arrivalDate: arrived_time,
+          userId: userId,
         });
       });
     return passenger;

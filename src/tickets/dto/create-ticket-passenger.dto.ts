@@ -11,4 +11,6 @@ export class CreateTicketAndPassengerDto {
   readonly passengerLastName: string;
   @IsString()
   readonly arrivedTime: Date;
+  @IsNumber()
+  readonly userId: number;
 }

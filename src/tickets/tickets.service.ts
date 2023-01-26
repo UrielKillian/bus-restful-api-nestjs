@@ -4,13 +4,13 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { SeatsService } from '../seats/seats.service';
 import { TripsService } from '../trips/trips.service';
 import { PassengersService } from '../passengers/passengers.service';
-import { DepartmentsService } from "../departments/departments.service";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Ticket } from "./entities/ticket.entity";
-import { Repository } from "typeorm";
-import { Seat } from "../seats/entities/seat.entity";
-import { Trip } from "../trips/entities/trip.entity";
-import { Passenger } from "../passengers/entities/passenger.entity";
+import { DepartmentsService } from '../departments/departments.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Ticket } from './entities/ticket.entity';
+import { Repository } from 'typeorm';
+import { Seat } from '../seats/entities/seat.entity';
+import { Trip } from '../trips/entities/trip.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class TicketsService {
@@ -21,6 +21,7 @@ export class TicketsService {
     private readonly tripsService: TripsService,
     private readonly passengersService: PassengersService,
     private readonly departmentService: DepartmentsService,
+    private readonly usersService: UsersService,
   ) {}
   async create(createTicketDto: CreateTicketDto) {
     const trip = await this.tripsService.findOne(createTicketDto.tripId);
@@ -34,6 +35,7 @@ export class TicketsService {
       seat: seat as Seat,
       arrivalDate: createTicketDto.arrivalDate,
     });
+    ticket.user = await this.usersService.findOne(createTicketDto.userId);
     return this.ticketRepository.save(ticket);
   }
 
@@ -46,6 +48,23 @@ export class TicketsService {
       id: id,
     });
     return ticket;
+  }
+
+  async findTicketsByUserId(userId: number) {
+    let id = 0;
+    const user = await this.usersService.findOne(userId).then(() => {
+      id = userId;
+    });
+    return this.ticketRepository.find({
+      relations: {
+        user: true,
+      },
+      where: {
+        user: {
+          id: id,
+        },
+      },
+    });
   }
 
   update(id: number, updateTicketDto: UpdateTicketDto) {

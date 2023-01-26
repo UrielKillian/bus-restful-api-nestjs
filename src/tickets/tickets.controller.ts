@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
-import { ApiTags } from "@nestjs/swagger";
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tickets Controller')
 @Controller('tickets')
@@ -22,6 +30,11 @@ export class TicketsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ticketsService.findOne(+id);
+  }
+
+  @Get('user/:id')
+  findTicketsByUserId(@Param('id') id: string) {
+    return this.ticketsService.findTicketsByUserId(+id);
   }
 
   @Patch(':id')

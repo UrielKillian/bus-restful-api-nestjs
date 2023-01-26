@@ -9,4 +9,6 @@ export class CreateTicketDto {
   readonly passengerId: number;
   @IsString()
   readonly arrivalDate: Date;
+  @IsNumber()
+  readonly userId: number;
 }
